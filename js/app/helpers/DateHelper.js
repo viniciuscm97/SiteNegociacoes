@@ -4,7 +4,7 @@ class DateHelper {
         throw new Error('DateHelper não pode ser instanciada')
     }
     // static para nao precisar criar uma estancia da classe
-    static DataParaTexto(data){
+    static dataParaTexto(data){
         //template string
         return `${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`
     }
