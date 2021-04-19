@@ -1,9 +1,11 @@
 class Negociacao {
 
-    constructor(data,quantidade,valor){
+    constructor(data,quantidade,valor,tipo){
         this._data = new Date(data.getTime())
         this._quantidade = quantidade
         this._valor = valor
+        this._tipo = tipo
+        
         Object.freeze(this)
         
     }
@@ -21,6 +23,10 @@ class Negociacao {
     }
     get valor(){
         return this._valor
+    }
+
+    get tipo(){
+        return this._tipo
     }
 
 }

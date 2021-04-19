@@ -1,0 +1,3 @@
+class NegociacaoOpcao extends Negociacao {
+    
+}

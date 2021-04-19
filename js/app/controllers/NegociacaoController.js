@@ -6,27 +6,34 @@ class NegociacaoController {
         this._inputQuantidade = $('#quantidade')
         this._inputData = $('#data')
         this._inputValor = $('#valor')
+        this._inputTipo = document.querySelectorAll('#tipo')
+    
+    
+        this._listaNegociacoes = new Bind(
+            new ListaNegociacoes(),
+            new NegociacoesView($('#negociacoesView')),
+            'adiciona','esvazia')
 
-        this._listaNegociacoes = new ListaNegociacoes()
-
-        this._negociacoesView = new NegociacoesView($('#negociacoesView'))
-        this._negociacoesView.update(this._listaNegociacoes)
-
-        this._mensagem = new Mensagem()
-        this._mensagemView = new MensagemView($("#mensagemView"))
-        this._mensagemView.update(this._mensagem)
+        this._mensagem = new Bind(
+            new Mensagem(),
+            new MensagemView($("#mensagemView")),
+            'texto'
+        )
+             
+        
     }
 
-    adiciona(event){
-        
+    adiciona(event){        
         // não recarregar pagina
-        event.preventDefault()        
-        this._listaNegociacoes.adiciona(this._criaNegociacao())
-        this._negociacoesView.update(this._listaNegociacoes)
+        event.preventDefault()
 
+        this._listaNegociacoes.adiciona(Factory.createNegociacao(this._inputTipo,
+        {'date':DateHelper.textoParaData(this._inputData.value),
+        'quantidade':this._inputQuantidade.value,
+        'valor':this._inputValor.value}))
+        
         this._mensagem.texto = 'Negociacao adicionada com sucesso'
-        this._mensagemView.update(this._mensagem)
-
+        
         this._limpaFormulario()
     }
 
@@ -34,15 +41,15 @@ class NegociacaoController {
         this._inputData.value = ''
         this._inputQuantidade.value = 1
         this._inputValor.value =  0.0
+        this._inputTipo.forEach(e => e.checked =false)
 
         this._inputData.focus()
     }
 
-    _criaNegociacao(){
-        return new Negociacao(
-            DateHelper.textoParaData(this._inputData.value),
-            this._inputQuantidade.value,
-            this._inputValor.value
-        )
+    apaga(){
+        this._listaNegociacoes.esvazia()
+        this._mensagem.texto = "Negociações apagadas com sucesso"
+        
     }
+
 }
