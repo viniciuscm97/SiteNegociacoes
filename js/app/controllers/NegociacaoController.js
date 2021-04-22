@@ -52,4 +52,17 @@ class NegociacaoController {
         
     }
 
+    importaNegociacoes(){
+        let service = new NegociacaoService()
+
+        service.obterNegociacoes()
+        .then(negociacoes => {
+            negociacoes.forEach(e => this._listaNegociacoes.adiciona(e))
+            this._mensagem.texto = "Negociações importadas com sucesso"})
+        .catch(erro => this._mensagem.texto = erro)
+
+       
+       
+    }
+
 }
