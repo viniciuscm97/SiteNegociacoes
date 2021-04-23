@@ -3,13 +3,13 @@ class NegociacoesView extends View {
  
     template(model) {
         return `<table class="table table-hover table-bordered">
-        <thead>
+        <thead class="pointer">
             <tr>
-                <th>DATA</th>
-                <th>QUANTIDADE</th>
-                <th>VALOR</th>
-                <th>TIPO</th>
-                <th>VOLUME</th>
+                <th onclick="negociacaoController.ordena('data')">DATA</th>
+                <th onclick="negociacaoController.ordena('quantidade')">QUANTIDADE</th>
+                <th onclick="negociacaoController.ordena('valor')">VALOR</th>
+                <th onclick="negociacaoController.ordena('tipo')">TIPO</th>
+                <th onclick="negociacaoController.ordena('volume')">VOLUME</th>
             </tr>
         </thead>
         

@@ -7,12 +7,14 @@ class NegociacaoController {
         this._inputData = $('#data')
         this._inputValor = $('#valor')
         this._inputTipo = document.querySelectorAll('#tipo')
+
+        this._ordemAtual = '';
     
     
         this._listaNegociacoes = new Bind(
             new ListaNegociacoes(),
             new NegociacoesView($('#negociacoesView')),
-            'adiciona','esvazia')
+            'adiciona','esvazia', 'ordena', 'inverteOrdem')
 
         this._mensagem = new Bind(
             new Mensagem(),
@@ -62,7 +64,17 @@ class NegociacaoController {
         .catch(erro => this._mensagem.texto = erro)
 
        
-       
+    }
+
+
+    ordena(campo){
+
+        if(this._ordemAtual == campo) {
+            this._listaNegociacoes.inverteOrdem()
+        } else {
+            this._listaNegociacoes.ordena((a, b) => a[campo] - b[campo]);
+        }
+        this._ordemAtual = campo;
     }
 
 }

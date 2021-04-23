@@ -1,4 +1,5 @@
 <!-- aluraframe/client/post.html -->
+<!-- aluraframe/client/post.html -->
 <html>
 <head>
     <meta charset="UTF-8">
@@ -28,25 +29,58 @@
         <button class="btn btn-primary" type="submit" onclick="sendPost(event)">Enviar dados para servidor</button>
     </form>
 
-    <script>
+    <script src="./js/app/services/HttpService.js"></script>
 
+    <script>
+        
         function sendPost(event) {
 
             event.preventDefault();
+
             console.log("Enviando post");
 
-            let data = document.querySelector('#data')
-            let quantidade = document.querySelector('#quantidade')
-            let valor = document.querySelector('#valor')
+            let $ = document.querySelector.bind(document);
+            inputData = $('#data');
+            inputQuantidade = $('#quantidade');
+            inputValor = $('#valor');
 
-            let xhr = new XMLHttpRequest()
+            let negociacao = {
+                data: inputData.value,
+                quantidade: inputQuantidade.value,
+                valor: inputValor.value
+            };
 
-            xhr.open('POST', '/negociacoes')
-            xhr.setRequestHeader("Content-type", "")
-            //xhr.response()
+            new HttpService().post('/negociacoes', negociacao)
+            .then(msg => {           
+                        inputData.value = '';
+                        inputQuantidade.value = 1;
+                        inputValor.value = 0.0;
+                        inputData.focus();
+                        console.log(msg); })
+            .catch(erro =>{throw new Error(erro)})
 
-            xhr.send()
-        }
+            // let xhr = new XMLHttpRequest();
+            // xhr.open("POST", "/negociacoes", true);
+            // xhr.setRequestHeader("Content-type", "application/json");
+
+            // xhr.onreadystatechange = () => {
+
+            //     if (xhr.readyState == 4) {
+
+            //         if (xhr.status == 200) {
+            //             inputData.value = '';
+            //             inputQuantidade.value = 1;
+            //             inputValor.value = 0.0;
+            //             inputData.focus();
+            //             alert('Negociação enviada com sucesso');
+            //         } else {
+            //             alert(`Não foi possível enviar a negociação: ${xhr.responseText}`);
+            //         }
+            //     }
+            // }
+            // xhr.send(JSON.stringify(negociacao));
+
+    }
     </script>
 </body>
 </html>
