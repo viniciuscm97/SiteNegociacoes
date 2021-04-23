@@ -26,17 +26,26 @@ class NegociacaoController {
     }
 
     adiciona(event){        
-        // não recarregar pagina
         event.preventDefault()
 
-        this._listaNegociacoes.adiciona(Factory.createNegociacao(this._inputTipo,
-        {'date':DateHelper.textoParaData(this._inputData.value),
-        'quantidade':this._inputQuantidade.value,
-        'valor':this._inputValor.value}))
+        ConnectionFactory
+            .getConnection()
+            .then(connection => {
+
+                let negociacao = this.criaNegociacao()
+
+                new NegociacaoDao(connection)
+                    .adiciona(negociacao)
+                    .then(() => {
+
+                        this._listaNegociacoes.adiciona(negociacao)
+                        this._mensagem.texto = 'Negociacao adicionada com sucesso'
+                        this._limpaFormulario()
+
+                    })
+            }).catch(erro => this._mensagem.texto = erro)
         
-        this._mensagem.texto = 'Negociacao adicionada com sucesso'
         
-        this._limpaFormulario()
     }
 
     _limpaFormulario(){
@@ -76,5 +85,15 @@ class NegociacaoController {
         }
         this._ordemAtual = campo;
     }
+
+    criaNegociacao(){
+        let negociacao = Factory.createNegociacao(this._inputTipo,
+            {'date':DateHelper.textoParaData(this._inputData.value),
+            'quantidade':parseInt( this._inputQuantidade.value),
+            'valor':parseFloat(this._inputValor.value)});
+        return negociacao
+    }
+
+
 
 }
